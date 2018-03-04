@@ -1,0 +1,11 @@
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.csproj.CoreCompileInputs.cache
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.AssemblyInfoInputs.cache
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.AssemblyInfo.cs
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\BackEndProject.deps.json
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\BackEndProject.runtimeconfig.json
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\BackEndProject.runtimeconfig.dev.json
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\BackEndProject.dll
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\BackEndProject.pdb
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.csprojResolveAssemblyReference.cache
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.dll
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.pdb
