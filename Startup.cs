@@ -59,8 +59,8 @@ namespace BackEndProject
                         ValidateLifetime = true,
                         ValidateIssuerSigningKey = true,
                         ValidIssuer = Configuration["Jwt:Issuer"],
-                        ValidAudience = Configuration["Jwt:Issuer"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
+                        ValidAudience = Configuration["Jwt:Audience"],
+                        IssuerSigningKey =  new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["Jwt:Key"]))
                     };
                 });
 
@@ -80,10 +80,10 @@ namespace BackEndProject
                 }
             });
             //session
+            app.UseAuthentication();
             app.UseSession();
             app.UseCors(b => b.WithOrigins("*").AllowAnyHeader().AllowAnyMethod());
             app.UseMvcWithDefaultRoute();
-            app.UseAuthentication();
             app.UseDefaultFiles();
             app.UseStaticFiles();
         }

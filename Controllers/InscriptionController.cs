@@ -34,17 +34,23 @@ namespace BackEndProject.Controllers
         /**
          * Verifier si le mail est activer ou pas si true le activer sinon rien faire
         //**/
-        [Route("verify")]
-        [HttpGet("{token}"), AllowAnonymous]
-        public IActionResult Verify(string token)
+           [Route("verify")]
+             [HttpGet("{token}"), AllowAnonymous]
+             public IActionResult Verify(string token)
+             {
+                 IActionResult response = Unauthorized();
+                 if(_inscrptionMetier.ActivateUser(token) == true)
+                     response = Ok();
+                 return response;
+             }
+  
+    /*    [Route("getActivite")]
+        [HttpGet("{siren}"), AllowAnonymous]
+        public string getActivity(string siren)
         {
-            IActionResult response = Unauthorized();
-            if(_inscrptionMetier.ActivateUser(token) == true)
-                response = Ok();
-            return response;
+            return _inscrptionMetier.getActivity("498094234");
         }
-
-    
+     */ 
         /*
          * Vérifier si le num de TVA est valide
          */

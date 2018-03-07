@@ -31,10 +31,10 @@ namespace BackEndProject.Helpers
                 new Claim(ClaimTypes.Role, user.Role.Description)
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
+                _config["Jwt:Audience"],
                 claims: claims,
                 notBefore: DateTime.Now,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.Now.AddMinutes(300),
                 signingCredentials: creds);
             return (new JwtSecurityTokenHandler()).WriteToken(token);
         }

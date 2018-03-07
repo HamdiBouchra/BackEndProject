@@ -301,8 +301,6 @@ namespace BackEndProject.FactoryPattern
                                 PaysId = PaysIdentif,
                                 Ville = getCityFromAdresse(adresse.ToString())
                             };
-
-                          
                         }
                       }
                         cptCntct = new CompteContact()
@@ -349,6 +347,25 @@ namespace BackEndProject.FactoryPattern
             return null;
         }
 
+
+        public Object updateCompte(Comptes c)
+        {
+            try
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    _context.Comptes.Update(c);
+                     transaction.Commit();
+                }
+            }
+            catch(DbUpdateException)
+            {
+
+            }
+
+                    return null;
+        }
+
         public IActionResult CreerDossierClient()
         {
 
@@ -366,6 +383,13 @@ namespace BackEndProject.FactoryPattern
             return p.Id;
         }
 
+
+
+        public string getActivity(string siren)
+        {
+            var infosFromAPI = getInfosFromAPISIRENAsync(siren).Result;
+            return infosFromAPI["records"][0]["fields"]["activite"].ToObject<string>();
+        }
 
     }
 }

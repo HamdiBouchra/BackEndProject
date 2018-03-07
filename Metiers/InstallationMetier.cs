@@ -22,16 +22,16 @@ namespace BackEndProject.Metiers
 
         public IEnumerable<Factors> getAllFactors()
         {
-            var listFactors = _context.Factors.ToList();
+            var listFactors = _context.Factors.Include(p => p.ProduitFactor).ThenInclude(p => p.IdProduitNavigation).ToList();
                 return listFactors;
         }
 
 
-        public IEnumerable<ProduitFa> getProductsFactor(int idFactor)
+        public IEnumerable<ProduitFa> getProducFactor(int idFactor)
         {
-            //var listProduct = _context.ProduitFactor.Select(item => item.IdFactor == idFactor).Include(item => item.IdProduitNavigation).Distinct().ToList();
-            var list = _context.ProduitFa.Include(f => f.ProduitFactor).ThenInclude(f => f.IdFactor == idFactor).ToList();
-                return list;
+           // var list = _context.ProduitFa.Include(p => p.ProduitFactor).ThenInclude(t => t.IdFactorNavigation.Id == idFactor);
+           var list = _context.ProduitFactor.Select(t => t.IdProduitNavigation).Where(cc => cc.ProduitFactor.Select(c => c.IdFactorNavigation.Id).FirstOrDefault() == idFactor);
+            return list;
         }
 
 

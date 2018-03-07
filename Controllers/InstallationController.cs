@@ -8,6 +8,7 @@ using BackEndProject.Models;
 using Microsoft.Extensions.Configuration;
 using BackEndProject.Metiers;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BackEndProject.Controllers
 {
@@ -25,27 +26,23 @@ namespace BackEndProject.Controllers
         }
 
         //GET: api/Installation
-        [HttpGet]
-        public IEnumerable<Factors> GetFactorsName()
+        [Route("getFactors")]
+        [HttpGet, Authorize]
+        public IActionResult GetFactorsName()
           {
-              return _installationMetier.getAllFactors();
+            Console.WriteLine("#################################################");
+              return Ok(_installationMetier.getAllFactors());
           }
 
-        [Route("testProduit")]
-        [HttpGet("{idFactor}")]
-        public IEnumerable<ProduitFa> getProductsFactor(int idFactor)
+        /*
+         * Récupérer la liste des produits d'un tel factor
+         */
+        [Route("getProduits")]
+        [HttpGet("{idFactor}"),Authorize]
+        public IActionResult getProductsFactor(int idFactor)
         {
-            Console.WriteLine("****************");
-            // var list = _context.ProduitFactor.Select(t => t.ProduitFactor.Where(c => c.IdFactor == idFactor));
-            // var listt = _context.ProduitFactor.Select(c => c.IdFactorNavigation.Id);
-            //Factors f = _context.ProduitFactor.Select(c => c.IdFactorNavigation).Where(cc => cc.Id== idFactor).FirstOrDefault();
-            var list = _context.ProduitFactor.Select(t => t.IdProduitNavigation).Where(cc => cc.ProduitFactor.Select(c => c.IdFactorNavigation.Id).FirstOrDefault() == idFactor);
-           /* foreach(ProduitFa f in lis1t)
-            {
-                Console.WriteLine("PPPPPP => " + f.Description);
-            }*/
-
-            return list;
+            Console.WriteLine("ID FACT ========================>" + idFactor);
+            return Ok(_installationMetier.getProducFactor(idFactor));
         }
 
 

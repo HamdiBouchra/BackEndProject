@@ -34,7 +34,7 @@ namespace BackEndProject
 
         /*http://192.168.1.81:58083*/
         public static IWebHost BuildWebHost(string[] args) =>
-              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083")
+              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083", "http://192.168.1.65:58083")
                   .UseStartup<Startup>()
                   .Build();
             
