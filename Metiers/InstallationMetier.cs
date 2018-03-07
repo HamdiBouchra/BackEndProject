@@ -27,12 +27,7 @@ namespace BackEndProject.Metiers
         }
 
 
-        public IEnumerable<ProduitFa> getProducFactor(int idFactor)
-        {
-           // var list = _context.ProduitFa.Include(p => p.ProduitFactor).ThenInclude(t => t.IdFactorNavigation.Id == idFactor);
-           var list = _context.ProduitFactor.Select(t => t.IdProduitNavigation).Where(cc => cc.ProduitFactor.Select(c => c.IdFactorNavigation.Id).FirstOrDefault() == idFactor);
-            return list;
-        }
+  
 
 
     }

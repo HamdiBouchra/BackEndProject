@@ -29,10 +29,12 @@ namespace BackEndProject.Controllers
         {
             IActionResult response = Unauthorized();
             PublicUser user = _logInMetier.Authenticate(login);
+
             if (user != null)
             {
                 var tokenString = _tokenHelper.BuildToken(user);
-                response = Ok(new { token = tokenString, Utilisateur = user });
+                var cpt = _context.CompteContact.Select(t => t.IdCptNavigation).Where(p => p.MainContactId == user.Contact.Id).FirstOrDefault();
+                response = Ok(new { token = tokenString, Utilisateur = user,compte = cpt });
             }
             return response;
         }

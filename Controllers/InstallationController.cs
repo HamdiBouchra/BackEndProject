@@ -34,17 +34,5 @@ namespace BackEndProject.Controllers
               return Ok(_installationMetier.getAllFactors());
           }
 
-        /*
-         * Récupérer la liste des produits d'un tel factor
-         */
-        [Route("getProduits")]
-        [HttpGet("{idFactor}"),Authorize]
-        public IActionResult getProductsFactor(int idFactor)
-        {
-            Console.WriteLine("ID FACT ========================>" + idFactor);
-            return Ok(_installationMetier.getProducFactor(idFactor));
-        }
-
-
     }
 }

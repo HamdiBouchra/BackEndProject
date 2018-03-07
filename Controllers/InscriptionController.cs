@@ -44,13 +44,7 @@ namespace BackEndProject.Controllers
                  return response;
              }
   
-    /*    [Route("getActivite")]
-        [HttpGet("{siren}"), AllowAnonymous]
-        public string getActivity(string siren)
-        {
-            return _inscrptionMetier.getActivity("498094234");
-        }
-     */ 
+ 
         /*
          * Vérifier si le num de TVA est valide
          */

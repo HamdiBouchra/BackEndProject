@@ -42,7 +42,7 @@ namespace BackEndProject.FactoryPattern
          */
         public Boolean ActivateUser(string token)
         {
-            PublicUser user = _tokenHelper.ValidateToken(token);
+            PublicUser user = _tokenHelper.ValidateVerificationToken(token);
             user = _context.PublicUser.First(x => x.Id == user.Id);
 
             if (user != null)

@@ -28,6 +28,7 @@ namespace BackEndProject.Helpers
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
             var claims = new[]
             {
+                new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.Description)
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -61,7 +62,7 @@ namespace BackEndProject.Helpers
             return (new JwtSecurityTokenHandler()).WriteToken(token);
         }
 
-        public PublicUser ValidateToken(string token)
+        public PublicUser ValidateVerificationToken(string token)
         {
             PublicUser result = null;
             TokenValidationParameters validation = new TokenValidationParameters()
@@ -87,6 +88,37 @@ namespace BackEndProject.Helpers
                 {
                     Id = temp,
                     Username = jsonToken.Claims.ElementAt(1).Value
+                };
+            }
+            catch { }
+            return result;
+        }
+
+        public PublicUser ValidateToken(string token)
+        {
+            PublicUser result = null;
+            TokenValidationParameters validation = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Issuer"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]))
+            };
+            SecurityToken returnedToken = null;
+
+            var handler = new JwtSecurityTokenHandler();
+            ClaimsPrincipal jsonToken = null;
+            try
+            {
+                jsonToken = handler.ValidateToken(token, validation, out returnedToken);
+                int temp = -1;
+                int.TryParse(jsonToken.Claims.ElementAt(0).Value, out temp);
+                result = new PublicUser()
+                {
+                    Id = temp,
                 };
             }
             catch { }
