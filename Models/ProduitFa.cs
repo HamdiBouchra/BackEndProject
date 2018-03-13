@@ -12,7 +12,9 @@ namespace BackEndProject.Models
 
         public int IdProduit { get; set; }
         public string Description { get; set; }
+        public int? TypeId { get; set; }
 
+        public TypesContrat Type { get; set; }
         public ICollection<ProduitFactor> ProduitFactor { get; set; }
     }
 }

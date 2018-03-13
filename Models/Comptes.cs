@@ -8,6 +8,7 @@ namespace BackEndProject.Models
         public Comptes()
         {
             CompteContact = new HashSet<CompteContact>();
+            DevisInformation = new HashSet<DevisInformation>();
         }
 
         public int Id { get; set; }
@@ -80,5 +81,6 @@ namespace BackEndProject.Models
 
         public Pays Pays { get; set; }
         public ICollection<CompteContact> CompteContact { get; set; }
+        public ICollection<DevisInformation> DevisInformation { get; set; }
     }
 }

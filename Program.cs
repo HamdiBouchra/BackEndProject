@@ -19,22 +19,25 @@ namespace BackEndProject
         public static readonly CRMv1Context contextCRM;
 
         private static  CRMv1Context _context = new CRMv1Context();
+        private static IConfiguration _config;
         public static void Main(string[] args)
         {
-          /*  LoginModel lg = new LoginModel();
-            LogInMetier lm = new LogInMetier();
-            IEnumerable<Comptes>  liste = lm.getListComptes(lg);
-            Console.WriteLine(liste.Count());
-            foreach(Comptes c in liste)
-            {
-                Console.WriteLine("CPT ====> " + c.Nom);
-            }*/
+            /*  LoginModel lg = new LoginModel();
+              LogInMetier lm = new LogInMetier();
+              IEnumerable<Comptes>  liste = lm.getListComptes(lg);
+              Console.WriteLine(liste.Count());
+              foreach(Comptes c in liste)
+              {
+                  Console.WriteLine("CPT ====> " + c.Nom);
+              }*/
+            InstallationMetier dev = new InstallationMetier(_config);
+            dev.calculDevis(544,22);
             BuildWebHost(args).Run();
         }
 
         /*http://192.168.1.81:58083*/
         public static IWebHost BuildWebHost(string[] args) =>
-              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083", "http://192.168.1.65:58083")
+              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083", "http://192.168.1.75:58083")
                   .UseStartup<Startup>()
                   .Build();
             

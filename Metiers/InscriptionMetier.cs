@@ -326,13 +326,13 @@ namespace BackEndProject.FactoryPattern
                         transaction.Commit();
 
                         var validationToken = _tokenHelper.BuildMailVerificationToken(user); //Token à envoyer dans un mail de verification avec le mailservice
-                        var ourLink = _config["url"] + "Inscription/verify?token=" + validationToken;
+                        var ourLink = "<a href='"+_config["Jwt:Issuer"] + "Inscription/verify?token=" + validationToken+"' > Clicker ici pour confirmer votre compte </a>";
                         MailModel mailModel = new MailModel()
                         {
                             fromAdr = "bouchra.hamdi95@gmail.com",
                             toAdr = user.Username,
-                            fromName = "Bouchra",
-                            toName = "Ismail",
+                            fromName = "AWBS TARGET",
+                            toName = ctcAjout.Nom,
                             content = ourLink,
                             subject = "Test"
                         };

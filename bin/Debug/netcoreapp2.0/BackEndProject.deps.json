@@ -1,7 +1,7 @@
 {
   "runtimeTarget": {
     "name": ".NETCoreApp,Version=v2.0",
-    "signature": "92b2fbf835b7dfb5f1a86607a49c6ec2e8dbc7cb"
+    "signature": "3f68bac75ae33957e39bb692d0e6efc50acf3397"
   },
   "compilationOptions": {
     "defines": [
@@ -23,6 +23,7 @@
     ".NETCoreApp,Version=v2.0": {
       "BackEndProject/1.0.0": {
         "dependencies": {
+          "IronPdf": "4.4.6.2",
           "Microsoft.AspNetCore.All": "2.0.0",
           "Microsoft.AspNetCore.Session": "2.0.1",
           "Microsoft.EntityFrameworkCore.SqlServer.Design": "1.1.5",
@@ -36,6 +37,14 @@
         },
         "compile": {
           "BackEndProject.dll": {}
+        }
+      },
+      "IronPdf/4.4.6.2": {
+        "runtime": {
+          "lib/net40/IronPdf.dll": {}
+        },
+        "compile": {
+          "lib/net40/IronPdf.dll": {}
         }
       },
       "Libuv/1.10.0": {
@@ -4390,6 +4399,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "IronPdf/4.4.6.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-r7W6qidwSK1tcxds/Zfh25FGzPvMA8cWLLONvkqA/70xNpbgQqazx3radAH8BRm5q2lc4MIng82PhbMuWoIOKg==",
+      "path": "ironpdf/4.4.6.2",
+      "hashPath": "ironpdf.4.4.6.2.nupkg.sha512"
     },
     "Libuv/1.10.0": {
       "type": "package",

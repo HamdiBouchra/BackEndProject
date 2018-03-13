@@ -34,5 +34,30 @@ namespace BackEndProject.Controllers
               return Ok(_installationMetier.getAllFactors());
           }
 
+
+        [Route("getSoftwares")]
+        [HttpGet, Authorize]
+        public IActionResult GetSoftwaresName()
+        {
+            Console.WriteLine("#################################################");
+            return Ok(_installationMetier.getAllSoftwares());
+        }
+
+        [Route("getTypeContrat")]
+        [HttpGet, Authorize(Roles = "Admin")]
+        public IActionResult getTypeContrat(int idProduit)
+        {
+            Console.WriteLine("#################################################");
+            return Ok(_installationMetier.getContratType(idProduit).Id);
+        }
+
+        [Route("calculDevis")]
+        [HttpGet, Authorize(Roles = "Admin")]
+        public IActionResult calculerDevis(int idProduit,int IdDevis)
+        {
+            Console.WriteLine("#################################################");
+            return Ok(_installationMetier.calculDevis(idProduit, IdDevis));
+        }
+
     }
 }

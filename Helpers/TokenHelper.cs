@@ -1,6 +1,7 @@
 ﻿using BackEndProject.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -20,8 +21,10 @@ namespace BackEndProject.Helpers
             _config = config;
             _context = new CRMv1Context();
         }
+
+
         /**
-         *Changer le password dans l'appSettings */         
+         *Changer le password dans l'appSettings */
         public string BuildToken(PublicUser user)
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
@@ -29,6 +32,7 @@ namespace BackEndProject.Helpers
             var claims = new[]
             {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
+                new Claim("idCompte",user.Contact.CompteContact.FirstOrDefault().IdCpt.ToString()),
                 new Claim(ClaimTypes.Role, user.Role.Description)
             };
             var token = new JwtSecurityToken(_config["Jwt:Issuer"],
@@ -47,14 +51,13 @@ namespace BackEndProject.Helpers
         {
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
             var claims = new[]
             {
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Username),
             };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],
-                _config["Jwt:Issuer"],
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],_config["Jwt:Audience"],
+                
                 claims: claims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddDays(7),
@@ -68,11 +71,11 @@ namespace BackEndProject.Helpers
             TokenValidationParameters validation = new TokenValidationParameters()
             {
                 ValidateIssuer = true,
-                ValidateAudience = true,
                 ValidateLifetime = true,
+                ValidateAudience = true,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = _config["Jwt:Issuer"],
-                ValidAudience = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]))
             };
             SecurityToken returnedToken = null;
@@ -83,14 +86,16 @@ namespace BackEndProject.Helpers
             {
                 jsonToken = handler.ValidateToken(token, validation, out returnedToken);
                 int temp = -1;
-                int.TryParse(jsonToken.Claims.ElementAt(0).Value,out temp);
+                int.TryParse(jsonToken.Claims.ElementAt(0).Value, out temp);
                 result = new PublicUser()
                 {
                     Id = temp,
                     Username = jsonToken.Claims.ElementAt(1).Value
                 };
             }
-            catch { }
+            catch {
+                throw;
+            }
             return result;
         }
 
@@ -104,7 +109,7 @@ namespace BackEndProject.Helpers
                 ValidateLifetime = true,
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = _config["Jwt:Issuer"],
-                ValidAudience = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]))
             };
             SecurityToken returnedToken = null;
@@ -123,6 +128,64 @@ namespace BackEndProject.Helpers
             }
             catch { }
             return result;
+        }
+
+
+        public int getSidToken(string j)
+        {
+            int temp = -1;
+            TokenValidationParameters validation = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]))
+            };
+            SecurityToken returnedToken = null;
+
+            var handler = new JwtSecurityTokenHandler();
+            ClaimsPrincipal jsonToken = null;
+            try
+            {
+                jsonToken = handler.ValidateToken(j, validation, out returnedToken);
+                int.TryParse(jsonToken.Claims.ElementAt(0).Value, out temp);
+            }
+            catch { }
+            return temp;
+
+        }
+
+        public int getCompteIdToken(string j)
+        {
+            int temp = -1;
+            TokenValidationParameters validation = new TokenValidationParameters()
+            {
+                ValidateIssuer = true,
+                ValidateAudience = true,
+                ValidateLifetime = true,
+                ValidateIssuerSigningKey = true,
+                ValidIssuer = _config["Jwt:Issuer"],
+                ValidAudience = _config["Jwt:Audience"],
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:KeyForMail"]))
+            };
+            SecurityToken returnedToken = null;
+
+            var handler = new JwtSecurityTokenHandler();
+            ClaimsPrincipal jsonToken = null;
+            try
+            {
+                jsonToken = handler.ValidateToken(j, validation, out returnedToken);
+                int.TryParse(jsonToken.Claims.ElementAt(1).Value, out temp);
+            }
+            catch
+            {
+                throw;
+            }
+            return temp;
+
         }
 
 
