@@ -9,3 +9,5 @@ C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\Ba
 C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.csprojResolveAssemblyReference.cache
 C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.dll
 C:\PlateformeTargetBack\BackEndProject\BackEndProject\obj\Debug\netcoreapp2.0\BackEndProject.pdb
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\AwbsTargetWebShared.dll
+C:\PlateformeTargetBack\BackEndProject\BackEndProject\bin\Debug\netcoreapp2.0\AwbsTargetWebShared.pdb

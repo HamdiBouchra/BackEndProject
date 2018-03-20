@@ -230,6 +230,7 @@ namespace BackEndProject.FactoryPattern
             Contacts ctcAjout = null;
             CompteContact cptCntct = null;
             PublicUser user = null;
+            Boolean resu;
             //On va tester selon la réponse de l'identifiant( SIREN ou bien TVA)
             try
             {
@@ -338,13 +339,14 @@ namespace BackEndProject.FactoryPattern
                         };
                         _mailService.SendVerificationMail(mailModel);
                     }
-                return new { cmpt = cptAjout, cntct = ctcAjout };
+                resu = true;
+                return new { operation = resu };
             }            
             catch(DbUpdateException)
             {
-              
+                resu = false;
             }
-            return null;
+            return resu;
         }
 
 

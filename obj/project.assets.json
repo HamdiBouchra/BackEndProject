@@ -5204,6 +5204,16 @@
         "runtime": {
           "lib/netstandard1.3/Microsoft.WindowsAzure.Storage.dll": {}
         }
+      },
+      "AwbsTargetWebShared/1.0.0": {
+        "type": "project",
+        "framework": ".NETStandard,Version=v2.0",
+        "compile": {
+          "bin/placeholder/AwbsTargetWebShared.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AwbsTargetWebShared.dll": {}
+        }
       }
     }
   },
@@ -13539,10 +13549,16 @@
         "windowsazure.storage.8.1.4.nupkg.sha512",
         "windowsazure.storage.nuspec"
       ]
+    },
+    "AwbsTargetWebShared/1.0.0": {
+      "type": "project",
+      "path": "../AwbsTargetWebShared/AwbsTargetWebShared.csproj",
+      "msbuildProject": "../AwbsTargetWebShared/AwbsTargetWebShared.csproj"
     }
   },
   "projectFileDependencyGroups": {
     ".NETCoreApp,Version=v2.0": [
+      "AwbsTargetWebShared >= 1.0.0",
       "IronPdf >= 4.4.6.2",
       "Microsoft.AspNetCore.All >= 2.0.0",
       "Microsoft.AspNetCore.Session >= 2.0.1",
@@ -13585,7 +13601,11 @@
       },
       "frameworks": {
         "netcoreapp2.0": {
-          "projectReferences": {}
+          "projectReferences": {
+            "C:\\PlateformeTargetBack\\BackEndProject\\AwbsTargetWebShared\\AwbsTargetWebShared.csproj": {
+              "projectPath": "C:\\PlateformeTargetBack\\BackEndProject\\AwbsTargetWebShared\\AwbsTargetWebShared.csproj"
+            }
+          }
         }
       },
       "warningProperties": {

@@ -22,10 +22,16 @@
 <ItemGroup>
     <DotNetCliToolReference Include="Microsoft.EntityFrameworkCore.Tools.Dotnet" Version="1.0.1" />
 </ItemGroup>
+  
+
+<ItemGroup>
+  <ProjectReference Include="..\AwbsTargetWebShared\AwbsTargetWebShared.csproj" />
+</ItemGroup>
 
 
   <PropertyGroup>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <RootNamespace>com.awbs.web.backend</RootNamespace>
   </PropertyGroup>
 
 </Project>

@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 
 namespace BackEndProject.Metiers
 {
-  
     public class InstallationMetier
     {
         private IConfiguration _config;
@@ -42,7 +41,9 @@ namespace BackEndProject.Metiers
             Console.WriteLine("TC TYPE Desc ====> " + type.Sigle);
             return type;
         }
-
+        /**
+         * génération du prix total du devis
+         */
 
         public double calculDevis(int produitId, int IdDevis)
         {
@@ -51,7 +52,7 @@ namespace BackEndProject.Metiers
             double mdrCalcul = 0.0;
             double LettP = 0.0;
             DevisInformation devisInfos = _context.DevisInformation.Include(c => c.IdCptNavigation).Where(d => d.Id == IdDevis).FirstOrDefault();
-            Console.WriteLine("DEVIS INFOS =====> " + devisInfos.LogCompta);
+            /** Récupération des infos du devis à partir de son identifiant **/
             devis = new DevisInformation()
             {
                 NbrPoste = devisInfos.NbrPoste,
@@ -73,17 +74,18 @@ namespace BackEndProject.Metiers
                (devis.LettragePartiel == 0)) && ((devis.PreLettrage == 1) || (devis.PreLettrage == 0)) && (devis.Volumetrie > 0))
             {
                 double impactPrix = 0.0;
+                /** Récupérer le type du contrat à partir de l'identifiant du produit **/
                 TypesContrat tc = this.getContratType(produitId);
-                Console.WriteLine("TC TYPE ====> " + tc.Sigle);
                 resuDevis = (double)tc.PrixBase;
                 if (devis.NbrPoste >= tc.MinNbrPosteInstalle)
                     resuDevis += ((double)devis.NbrPoste - (double)tc.MinNbrPosteInstalle) * (double)tc.UniteSuppNbrPoste;
                 if (devis.NbrContrat >= tc.MinNbrContat)
                     resuDevis += ((double)devis.NbrContrat - (double)tc.MinNbrPosteInstalle) * (double)tc.UniteSuppContrat;
-                if (devis.Volumetrie >= tc.LimiteHausse)
+                if (devis.Volumetrie >= tc.LimiteHausse){
                     impactPrix += ((double)tc.LimiteHausse - (double)tc.Vnh) * (double)tc.Vspf;
-                else
-                {
+
+                }else{
+
                     if (devis.Volumetrie >= tc.Vnh)
                         impactPrix += (double)tc.Vspf * ((double)devis.Volumetrie - (double)tc.Vnh);
                     else

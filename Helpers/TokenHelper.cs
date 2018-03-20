@@ -56,8 +56,7 @@ namespace BackEndProject.Helpers
                 new Claim(ClaimTypes.Sid, user.Id.ToString()),
                 new Claim(ClaimTypes.Email, user.Username),
             };
-            var token = new JwtSecurityToken(_config["Jwt:Issuer"],_config["Jwt:Audience"],
-                
+            var token = new JwtSecurityToken(_config["Jwt:Issuer"],_config["Jwt:Audience"],                
                 claims: claims,
                 notBefore: DateTime.Now,
                 expires: DateTime.Now.AddDays(7),

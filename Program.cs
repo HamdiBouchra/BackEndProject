@@ -30,14 +30,14 @@ namespace BackEndProject
               {
                   Console.WriteLine("CPT ====> " + c.Nom);
               }*/
-            InstallationMetier dev = new InstallationMetier(_config);
-            dev.calculDevis(544,22);
+            //InstallationMetier dev = new InstallationMetier(_config);
+            //dev.calculDevis(550,22);
             BuildWebHost(args).Run();
         }
 
         /*http://192.168.1.81:58083*/
         public static IWebHost BuildWebHost(string[] args) =>
-              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083", "http://192.168.1.75:58083")
+              WebHost.CreateDefaultBuilder(args).UseUrls("http://localhost:58083", "http://192.168.1.66:58083")
                   .UseStartup<Startup>()
                   .Build();
             

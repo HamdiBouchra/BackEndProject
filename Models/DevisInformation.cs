@@ -15,11 +15,18 @@ namespace BackEndProject.Models
         public int? PreLettrage { get; set; }
         public int? ClotureFacture { get; set; }
         public int? IdCpt { get; set; }
-        public double? MdrPrcntVirts { get; set; }
-        public double? MdrPrcntChq { get; set; }
-        public double? MdrPrcntTrtAaccept { get; set; }
-        public double? MdrPrcntTrtSaccept { get; set; }
-        public double? MdrPrcntAutres { get; set; }
+        public double MdrPrcntVirts { get; set; }
+        public double MdrPrcntChq { get; set; }
+        public double MdrPrcntTrtAaccept { get; set; }
+        public double MdrPrcntTrtSaccept { get; set; }
+        public double MdrPrcntAutres { get; set; }
+        public string Siren { get; set; }
+        public string NomSociete { get; set; }
+        public string Pays { get; set; }
+        public string Activite { get; set; }
+        public int? Ch { get; set; }
+        public string Factor { get; set; }
+        public string Produit { get; set; }
 
         public Comptes IdCptNavigation { get; set; }
     }

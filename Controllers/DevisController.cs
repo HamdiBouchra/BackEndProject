@@ -68,26 +68,6 @@ namespace BackEndProject.Controllers
 }
 
 
-
-
-
-    [Route("SaveIdentite")]
-    [HttpPost, Authorize(Roles = "Admin")]
-
-        public IActionResult SaveIdentite([FromBody] JObject newIdentiteInformation)
-        {
-            JObject res = this._devisMetier.SaveIdentiteInformation(newIdentiteInformation);
-            Boolean b = (Boolean)res["saved"];
-
-            if ((Boolean)res["saved"])
-            {
-                return Ok(res);
-            }
-            else
-            {
-                return StatusCode(500, res);
-            }
-        }
  
         [Route("SaveDevis")]
         [HttpPost, Authorize(Roles = "Admin")]
@@ -108,6 +88,28 @@ namespace BackEndProject.Controllers
         }
 
 
+        [Route("SaveDevis")]
+        [HttpPost, Authorize(Roles = "Admin")]
+        public IActionResult SaveIdentity([FromBody] JObject newDevisInformation)
+        {
+            JObject res = null;
+           
+                StringValues token;
+                Request.Headers.TryGetValue("Authorization", out token);
+                 res = this._devisMetier.SaveIdentiteInformation(newDevisInformation, token.ToString().Substring(7));
+                Boolean b = (Boolean)res["saved"];
+                if ((Boolean)res["saved"])
+                {
+                    return Ok(res);
+                }
+                else
+                {
+                    return StatusCode(500, res);
+                }
+           
+        }
+
+
 
         [Route("getDevis")]
         [HttpGet, Authorize(Roles = "Admin")]
@@ -122,12 +124,9 @@ namespace BackEndProject.Controllers
         [HttpDelete("{idDevis}"), Authorize(Roles = "Admin")]
         public IActionResult deleteDevis(long idDevis)
         {
-            Console.WriteLine("#############################################################");
-            StringValues token; 
-            Request.Headers.TryGetValue("Authorization", out token);
-            if(_devisMetier.deleteDevis(idDevis, token.ToString().Substring(7)))
-                return Ok(true);
-            return Ok(false);
+            StringValues token;
+            Request.Headers.TryGetValue("Authorization", out token);          
+            return Ok(_devisMetier.deleteDevis(idDevis, token.ToString().Substring(7)));
         }
 
     }

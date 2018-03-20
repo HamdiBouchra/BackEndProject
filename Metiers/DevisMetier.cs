@@ -59,6 +59,8 @@ namespace BackEndProject.Metiers
                 if (requ["mdrCHQ"] != null) devis.MdrPrcntChq = requ["mdrCHQ"].ToObject<int>();
                 if (requ["mdrAutre"] != null) devis.MdrPrcntAutres = requ["mdrAutre"].ToObject<int>();
 
+               
+
                 _context.SaveChanges();
                 res.saved = true;
 
@@ -88,6 +90,9 @@ namespace BackEndProject.Metiers
                     if (requ["mdrBOR"] != null) devis.MdrPrcntTrtAaccept = requ["mdrBOR"].ToObject<int>();
                     if (requ["mdrCHQ"] != null) devis.MdrPrcntChq = requ["mdrCHQ"].ToObject<int>();
                     if (requ["mdrAutre"] != null) devis.MdrPrcntAutres = requ["mdrAutre"].ToObject<int>();
+
+                    
+
                     devis.IdCpt = cpt.Id;
 
                     _context.DevisInformation.Add(devis);
@@ -108,43 +113,65 @@ namespace BackEndProject.Metiers
                 {
                     res.time = DateTime.Now.ToString("HH:mm:ss - dd/MM/yyyy");
                 }*/
+
+            Console.WriteLine("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
             return res;
         }
 
-        public JObject SaveIdentiteInformation(JObject j)
+        public JObject SaveIdentiteInformation(JObject j, string token)
         {
             dynamic res = new JObject();
-
-            //try
-            //{
-            //    using (var transaction = _context.Database.BeginTransaction())
+            DevisInformation devis = null;
+            //   try
             //    {
-            //        PublicUser user = _context.PublicUser.Where(t => t.Id == _tokenHelper.getSidToken(j)).First();
-            //        Comptes cpt = _context.CompteContact.Select(t => t.IdCptNavigation).Where(p => p.MainContactId == user.Contact.Id).FirstOrDefault();
-            //        DevisInformation devis = new DevisInformation()
-            //        {
-            //            NbrPoste = int.Parse(j["Devis"]["nombrePoste"].ToObject<string>()),
-            //            NbrContrat = int.Parse(j["Devis"]["nombreContrat"].ToObject<string>()),
-            //            LogCompta = j["Devis"]["logCompta"].ToObject<string>(),
-            //            LogGestion = j["Devis"]["logGestion"].ToObject<string>(),
-            //            LettragePartiel = j["Devis"]["lettragePart"].ToObject<int>(),
-            //            ClotureFacture = j["Devis"]["clotureFacture"].ToObject<int>(),
-            //            PreLettrage = j["Devis"]["preLettrage"].ToObject<int>(),
-            //            Volumetrie = j["Devis"]["volumetrie"].ToObject<int>(),
-            //            IdCpt = cpt.Id
-            //        };
-            //        _context.DevisInformation.Add(devis);
-            //        _context.SaveChanges();
-            //        res.saved = true;
-            //        res.time = DateTime.Now;
-            //    }
-            //}
-            //catch (Exception e)
-            //{
-            //    res.saved = false;
-            //    res.time = DateTime.Now;
-            //    res.error = e.Message;
-            //}
+            int id = j["Devis"]["Id"].ToObject<int>();
+            //Il s'agit bien d'une modification d'un devis
+            var requ = j["Devis"];
+            if (id != -1)
+            {
+                devis = _context.DevisInformation.First(d => d.Id == id);
+
+                //Identity informations
+                if (requ["siren"] != null) devis.Siren = requ["siren"].ToObject<string>();
+                if (requ["nomSociete"] != null) devis.NomSociete = requ["nomSociete"].ToObject<string>();
+                if (requ["pays"] != null) devis.Pays = requ["pays"].ToObject<string>();
+                if (requ["activite"] != null) devis.Activite = requ["activite"].ToObject<string>();
+                if (requ["ca"] != null) devis.Ch = requ["ca"].ToObject<int>();
+                if (requ["factor"] != null) devis.Factor = requ["factor"].ToObject<string>();
+                if (requ["produit"] != null) devis.Produit = requ["produit"].ToObject<string>();
+
+                _context.SaveChanges();
+                res.saved = true;
+
+            }
+            //Il s'agit d'une nouvelle insertion d'un devis
+            else
+            {
+                using (var transaction = _context.Database.BeginTransaction())
+                {
+                    int idPublicUser = _tokenHelper.getSidToken(token);
+                    PublicUser user = _context.PublicUser.Include(u => u.Contact).Where(t => t.Id == idPublicUser).First();
+                    Comptes cpt = _context.CompteContact.Select(t => t.IdCptNavigation).Where(p => p.MainContactId == user.Contact.Id).FirstOrDefault();
+                    Console.WriteLine("COMPTE ID ====> " + cpt.Id);
+
+                    //Identity informations
+                    if (requ["siren"] != null) devis.Siren = requ["siren"].ToObject<string>();
+                    if (requ["nomSociete"] != null) devis.NomSociete = requ["nomSociete"].ToObject<string>();
+                    if (requ["pays"] != null) devis.Pays = requ["pays"].ToObject<string>();
+                    if (requ["activite"] != null) devis.Activite = requ["activite"].ToObject<string>();
+                    if (requ["ca"] != null) devis.Ch = requ["ca"].ToObject<int>();
+                    if (requ["factor"] != null) devis.Factor = requ["factor"].ToObject<string>();
+                    if (requ["produit"] != null) devis.Produit = requ["produit"].ToObject<string>();
+
+                    devis.IdCpt = cpt.Id;
+
+                    _context.DevisInformation.Add(devis);
+                    _context.SaveChanges();
+                    transaction.Commit();
+                    res.newId = devis.Id;
+                    res.saved = true;
+                }
+            }
             return res;
         }
 
@@ -161,7 +188,7 @@ namespace BackEndProject.Metiers
         }
 
         
-        public Boolean deleteDevis(long idDevis,string token)
+        public dynamic deleteDevis(long idDevis,string token)
         {
             int idCompte = this._tokenHelper.getCompteIdToken(token); // get compte id from token claims
             DevisInformation devis = _context.DevisInformation.FirstOrDefault(d => d.Id == idDevis);
@@ -172,11 +199,11 @@ namespace BackEndProject.Metiers
                 {
                     _context.DevisInformation.Remove(devis);
                     this._context.SaveChanges();
-                    return true;
+                    return new { deleted = true, idDevisDeleted = devis.Id };
                 }
                 catch
                 {
-                    return false;
+                    return new { deleted = false };
                 }
             }
             else

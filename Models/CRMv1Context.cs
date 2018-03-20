@@ -11,6 +11,7 @@ namespace BackEndProject.Models
         public virtual DbSet<Contacts> Contacts { get; set; }
         public virtual DbSet<Devis> Devis { get; set; }
         public virtual DbSet<DevisInformation> DevisInformation { get; set; }
+        public virtual DbSet<Document> Document { get; set; }
         public virtual DbSet<Factors> Factors { get; set; }
         public virtual DbSet<Fonction> Fonction { get; set; }
         public virtual DbSet<Pays> Pays { get; set; }
@@ -21,6 +22,16 @@ namespace BackEndProject.Models
         public virtual DbSet<Softwares> Softwares { get; set; }
         public virtual DbSet<TypesContrat> TypesContrat { get; set; }
 
+        public CRMv1Context()
+        {
+
+        }
+
+
+        public CRMv1Context(DbContextOptions<CRMv1Context> options)
+    : base(options)
+        { }
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             if (!optionsBuilder.IsConfigured)
@@ -28,15 +39,6 @@ namespace BackEndProject.Models
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseSqlServer(@"Server=DESKTOP-8A5F1J9\SQL;Database=CRMv1;Trusted_Connection=True;");
             }
-        }
-
-        public CRMv1Context(DbContextOptions<CRMv1Context> options)
-    : base(options)
-        { }
-
-        public CRMv1Context()
-        {
-
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -567,7 +569,19 @@ namespace BackEndProject.Models
 
             modelBuilder.Entity<DevisInformation>(entity =>
             {
+                entity.Property(e => e.Activite)
+                    .HasColumnName("activite")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Ch).HasColumnName("CH");
+
                 entity.Property(e => e.ClotureFacture).HasColumnName("clotureFacture");
+
+                entity.Property(e => e.Factor)
+                    .HasColumnName("factor")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.IdCpt).HasColumnName("idCpt");
 
@@ -583,21 +597,51 @@ namespace BackEndProject.Models
                     .HasMaxLength(150)
                     .IsUnicode(false);
 
-                entity.Property(e => e.MdrPrcntAutres).HasColumnName("mdrPrcntAutres");
+                entity.Property(e => e.MdrPrcntAutres)
+                    .HasColumnName("mdrPrcntAutres")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MdrPrcntChq).HasColumnName("mdrPrcntCHQ");
+                entity.Property(e => e.MdrPrcntChq)
+                    .HasColumnName("mdrPrcntCHQ")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MdrPrcntTrtAaccept).HasColumnName("mdrPrcntTrtAaccept");
+                entity.Property(e => e.MdrPrcntTrtAaccept)
+                    .HasColumnName("mdrPrcntTrtAaccept")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MdrPrcntTrtSaccept).HasColumnName("mdrPrcntTrtSaccept");
+                entity.Property(e => e.MdrPrcntTrtSaccept)
+                    .HasColumnName("mdrPrcntTrtSaccept")
+                    .HasDefaultValueSql("((0))");
 
-                entity.Property(e => e.MdrPrcntVirts).HasColumnName("mdrPrcntVIRTS");
+                entity.Property(e => e.MdrPrcntVirts)
+                    .HasColumnName("mdrPrcntVIRTS")
+                    .HasDefaultValueSql("((0))");
 
                 entity.Property(e => e.NbrContrat).HasColumnName("nbrContrat");
 
                 entity.Property(e => e.NbrPoste).HasColumnName("nbrPoste");
 
+                entity.Property(e => e.NomSociete)
+                    .HasColumnName("nomSociete")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Pays)
+                    .HasColumnName("pays")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
                 entity.Property(e => e.PreLettrage).HasColumnName("preLettrage");
+
+                entity.Property(e => e.Produit)
+                    .HasColumnName("produit")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Siren)
+                    .HasColumnName("siren")
+                    .HasMaxLength(50)
+                    .IsUnicode(false);
 
                 entity.Property(e => e.Volumetrie).HasColumnName("volumetrie");
 
@@ -606,6 +650,28 @@ namespace BackEndProject.Models
                     .HasForeignKey(d => d.IdCpt)
                     .OnDelete(DeleteBehavior.Cascade)
                     .HasConstraintName("IdComptes");
+            });
+
+            modelBuilder.Entity<Document>(entity =>
+            {
+                entity.ToTable("document");
+
+                entity.Property(e => e.IdFactor).HasColumnName("idFactor");
+
+                entity.Property(e => e.Nom)
+                    .HasColumnName("nom")
+                    .HasMaxLength(150)
+                    .IsUnicode(false);
+
+                entity.Property(e => e.Url)
+                    .HasColumnName("url")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
+
+                entity.HasOne(d => d.IdFactorNavigation)
+                    .WithMany(p => p.Document)
+                    .HasForeignKey(d => d.IdFactor)
+                    .HasConstraintName("document_idFactor_FK");
             });
 
             modelBuilder.Entity<Factors>(entity =>
@@ -673,7 +739,7 @@ namespace BackEndProject.Models
 
                 entity.Property(e => e.Description)
                     .HasColumnName("description")
-                    .HasMaxLength(150);
+                    .HasMaxLength(300);
 
                 entity.Property(e => e.TypeId).HasColumnName("typeId");
 

@@ -7,6 +7,7 @@ namespace BackEndProject.Models
     {
         public Factors()
         {
+            Document = new HashSet<Document>();
             Fonction = new HashSet<Fonction>();
             ProduitFactor = new HashSet<ProduitFactor>();
         }
@@ -16,6 +17,7 @@ namespace BackEndProject.Models
         public string FactorName { get; set; }
         public string NumCompte { get; set; }
 
+        public ICollection<Document> Document { get; set; }
         public ICollection<Fonction> Fonction { get; set; }
         public ICollection<ProduitFactor> ProduitFactor { get; set; }
     }

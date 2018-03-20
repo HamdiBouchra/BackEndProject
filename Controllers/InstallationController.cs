@@ -30,7 +30,6 @@ namespace BackEndProject.Controllers
         [HttpGet, Authorize]
         public IActionResult GetFactorsName()
           {
-            Console.WriteLine("#################################################");
               return Ok(_installationMetier.getAllFactors());
           }
 
@@ -39,7 +38,6 @@ namespace BackEndProject.Controllers
         [HttpGet, Authorize]
         public IActionResult GetSoftwaresName()
         {
-            Console.WriteLine("#################################################");
             return Ok(_installationMetier.getAllSoftwares());
         }
 
